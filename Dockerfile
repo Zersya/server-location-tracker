@@ -8,7 +8,7 @@ RUN cargo build --release --bin server
 
 FROM rust:slim-bullseye as runtime
 
-RUN apt-get update && apt-get install -y libssl1.1 libpq-dev ca-certificates
+RUN apt-get update && apt-get install -y libssl1.1 ca-certificates
 
 COPY --from=builder /var/www/target/release/server /usr/local/bin/server
 

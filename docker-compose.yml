@@ -4,7 +4,9 @@ services:
     webserver:
         image: ${APP_NAME}:${ENV}
         container_name: ${APP_NAME}
-        build: .
+        build:
+          context: .
+          dockerfile: Dockerfile
         restart: unless-stopped
         working_dir: /var/www
         ports:
@@ -15,5 +17,5 @@ services:
             SERVER_HOST: "${SERVER_HOST}"
             SERVER_PORT: "${SERVER_PORT}"
             DB_HOST: "${DB_HOST}"
-            DB_USERNAME: "${root}"
-            DB_PASSWORD: "${root}"
+            DB_USERNAME: "${DB_USERNAME}"
+            DB_PASSWORD: "${DB_PASSWORD}"

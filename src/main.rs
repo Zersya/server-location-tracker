@@ -13,7 +13,10 @@ use serde::Serialize;
 
 #[tokio::main]
 async fn main() {
-    dotenv().expect(".env file not found");
+    match dotenv() {
+        Ok(_) => (),
+        Err(err) => println!("Error dotenv : {}", err.to_string()),
+    };
 
     tracing_subscriber::fmt::init();
 
