@@ -12,10 +12,8 @@ services:
         tty: true
         environment:
             APP_NAME: "${APP_NAME}"
-
             SERVER_HOST: "${SERVER_HOST}"
             SERVER_PORT: "${SERVER_PORT}"
-
             DB_HOST: "${DB_HOST}"
             DB_USERNAME: "${root}"
             DB_PASSWORD: "${root}"
