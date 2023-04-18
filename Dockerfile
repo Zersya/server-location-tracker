@@ -1,4 +1,4 @@
-FROM rust:1.68.2 as builder
+FROM rust:1.68.1 as builder
 
 WORKDIR /var/www
 COPY . /var/www
@@ -6,11 +6,9 @@ COPY . /var/www
 # cargo build rust
 RUN cargo build --release --bin server
 
-FROM debian:buster-slim as runtime
+FROM rust:slim-bullseye as runtime
 
 RUN apt-get update && apt-get install -y libssl1.1 libpq-dev ca-certificates
-
-ENV LD_LIBRARY_PATH /usr/local/pgsql/lib
 
 COPY --from=builder /var/www/target/release/server /usr/local/bin/server
 
