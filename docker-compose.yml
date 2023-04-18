@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+    webserver:
+        image: ${APP_NAME}:${ENV}
+        container_name: ${APP_NAME}
+        build: .
+        restart: unless-stopped
+        working_dir: /var/www
+        ports:
+            - 9000:9000
+        tty: true
+        environment:
+            APP_NAME: "${APP_NAME}"
+
+            SERVER_HOST: "${SERVER_HOST}"
+            SERVER_PORT: "${SERVER_PORT}"
+
+            DB_HOST: "${DB_HOST}"
+            DB_USERNAME: "${root}"
+            DB_PASSWORD: "${root}"
