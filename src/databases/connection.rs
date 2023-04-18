@@ -1,4 +1,3 @@
-use once_cell::sync::Lazy;
 use surrealdb::{
     engine::remote::ws::{Client, Ws},
     opt::auth::Root,
