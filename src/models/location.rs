@@ -11,6 +11,8 @@ pub struct Location {
     pub latlng: (f64, f64),
     pub speed: i32,
     pub head: i32,
+    pub timestamp: i64,
+    pub battery: i32,
     pub user: Thing,
 }
 
@@ -20,6 +22,8 @@ pub struct FormLocation {
     longitude: f64,
     speed: i32,
     head: i32,
+    timestamp: i64,
+    battery: i32,
     username: String,
 }
 
@@ -71,6 +75,8 @@ impl Location {
                 latlng: (payload.latitude, payload.longitude),
                 speed: payload.speed,
                 head: payload.head,
+                timestamp: payload.timestamp,
+                battery: payload.battery,
                 user: user.id,
             })
             .await
