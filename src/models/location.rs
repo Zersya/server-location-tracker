@@ -37,22 +37,27 @@ impl Location {
 
         let username = &payload.username;
 
-        let user = User {
-            id: Thing {
-                tb: "users".to_string(),
-                id: Id::String(username.into()),
-            },
-            username: payload.username,
-            friends: vec![],
-        };
-
-        let user_created: User = match conn.create("users").content(user).await {
+        let user: User = match conn.select(("users", &payload.username)).await {
             Ok(result) => result,
-            Err(err) => {
-                return Err(ModelError {
-                    status: 1101,
-                    message: err.to_string(),
-                })
+            Err(_) => {
+                let user = User {
+                    id: Thing {
+                        tb: "users".to_string(),
+                        id: Id::String(username.into()),
+                    },
+                    username: payload.username,
+                    friends: vec![],
+                };
+
+                match conn.create("users").content(user).await {
+                    Ok(result) => result,
+                    Err(err) => {
+                        return Err(ModelError {
+                            status: 1101,
+                            message: err.to_string(),
+                        })
+                    }
+                }
             }
         };
 
@@ -66,7 +71,7 @@ impl Location {
                 latlng: (payload.latitude, payload.longitude),
                 speed: payload.speed,
                 head: payload.head,
-                user: user_created.id,
+                user: user.id,
             })
             .await
         {
