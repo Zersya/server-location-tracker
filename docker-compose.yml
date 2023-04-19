@@ -32,7 +32,7 @@ services:
           - "traefik.http.routers.${APP_NAME}_${ENV}-secure.tls=true"
           - "traefik.http.routers.${APP_NAME}_${ENV}-secure.tls.certresolver=http"
           - "traefik.http.routers.${APP_NAME}_${ENV}-secure.service=${APP_NAME}_${ENV}"
-          - "traefik.http.services.${APP_NAME}_${ENV}.loadbalancer.server.port=8000"
+          - "traefik.http.services.${APP_NAME}_${ENV}.loadbalancer.server.port=${SERVER_PORT}"
           - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto = https"
           - "traefik.docker.network=proxy"
 
