@@ -9,8 +9,8 @@ use super::user::User;
 pub struct Location {
     pub id: Thing,
     pub latlng: (f64, f64),
-    pub speed: i32,
-    pub head: i32,
+    pub speed: f32,
+    pub head: f32,
     pub timestamp: i64,
     pub battery: i32,
     pub user: Thing,
@@ -20,8 +20,8 @@ pub struct Location {
 pub struct FormLocation {
     latitude: f64,
     longitude: f64,
-    speed: i32,
-    head: i32,
+    speed: f32,
+    head: f32,
     timestamp: i64,
     battery: i32,
     username: String,
