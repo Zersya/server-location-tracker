@@ -1,5 +1,6 @@
 mod databases;
 mod models;
+mod utils;
 
 use std::net::SocketAddr;
 
