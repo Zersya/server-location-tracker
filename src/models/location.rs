@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use surrealdb::sql::{Id, Thing};
 
-use crate::{databases::connection::Connection, ModelError};
+use crate::{databases::connection::Connection, utils::change_to_lowercase, ModelError};
 
 use super::user::User;
 
@@ -16,7 +16,7 @@ pub struct Location {
     pub user: Thing,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Deserialize)]
 pub struct FormLocation {
     latitude: f64,
     longitude: f64,
@@ -24,11 +24,13 @@ pub struct FormLocation {
     head: f32,
     timestamp: i64,
     battery: i32,
+    #[serde(with = "change_to_lowercase")]
     username: String,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct RequestGetLocation {
+    #[serde(with = "change_to_lowercase")]
     pub username: String,
 }
 
