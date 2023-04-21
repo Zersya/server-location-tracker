@@ -128,7 +128,7 @@ impl Location {
                 "user",
                 Thing {
                     tb: "users".to_string(),
-                    id: Id::String(username.to_string()),
+                    id: Id::String(username.to_string().to_lowercase()),
                 },
             ))
             .await
