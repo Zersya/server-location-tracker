@@ -44,7 +44,7 @@ impl Location {
             }
         };
 
-        let username = &payload.username;
+        let username = &payload.username.to_lowercase();
 
         let user: User = match conn.select(("users", &payload.username)).await {
             Ok(result) => result,
@@ -54,7 +54,7 @@ impl Location {
                         tb: "users".to_string(),
                         id: Id::String(username.into()),
                     },
-                    username: payload.username,
+                    username: payload.username.to_lowercase(),
                     friends: vec![],
                 };
 
