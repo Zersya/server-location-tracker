@@ -16,7 +16,7 @@ pub struct Location {
     pub user: Thing,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct FormLocation {
     latitude: f64,
     longitude: f64,
@@ -25,6 +25,11 @@ pub struct FormLocation {
     timestamp: i64,
     battery: i32,
     username: String,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct RequestGetLocation {
+    pub username: String,
 }
 
 impl Location {
@@ -101,7 +106,7 @@ impl Location {
         todo!()
     }
 
-    pub async fn get_all() -> Result<Vec<Self>, ModelError> {
+    pub async fn get_all(username: &String) -> Result<Vec<Self>, ModelError> {
         let conn = match Connection::connect().await {
             Ok(result) => result,
             Err(err) => {
@@ -112,7 +117,32 @@ impl Location {
             }
         };
 
-        let created: Vec<Location> = match conn.select("locations").await {
+        let mut builder = "SELECT * FROM locations";
+        if username.len() > 0 {
+            builder = "SELECT * FROM locations WHERE user = $user";
+        }
+
+        let result = match conn
+            .query(builder)
+            .bind((
+                "user",
+                Thing {
+                    tb: "users".to_string(),
+                    id: Id::String(username.to_string()),
+                },
+            ))
+            .await
+        {
+            Ok(mut result) => result.take(0),
+            Err(err) => {
+                return Err(ModelError {
+                    status: 1101,
+                    message: err.to_string(),
+                })
+            }
+        };
+
+        let locations = match result {
             Ok(result) => result,
             Err(err) => {
                 return Err(ModelError {
@@ -122,6 +152,6 @@ impl Location {
             }
         };
 
-        Ok(created)
+        Ok(locations)
     }
 }

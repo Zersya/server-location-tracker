@@ -3,11 +3,12 @@ mod models;
 
 use std::net::SocketAddr;
 
+use axum::extract::Query;
 use axum::http::StatusCode;
 use axum::routing::{get, post};
 use axum::{Json, Router};
 use dotenvy::dotenv;
-use models::location::{FormLocation, Location};
+use models::location::{FormLocation, Location, RequestGetLocation};
 use models::user::{User, UserAddFriend};
 use serde::Serialize;
 
@@ -52,8 +53,10 @@ async fn create_location(
     ResponseApi::new(StatusCode::CREATED, Some(result))
 }
 
-async fn get_all_location() -> (StatusCode, Json<ResponseApi<Option<Vec<Location>>>>) {
-    let result = match Location::get_all().await {
+async fn get_all_location(
+    Query(payload): Query<RequestGetLocation>,
+) -> (StatusCode, Json<ResponseApi<Option<Vec<Location>>>>) {
+    let result = match Location::get_all(&payload.username).await {
         Ok(result) => result,
         Err(err) => return ResponseApi::error(StatusCode::BAD_REQUEST, err.message),
     };
